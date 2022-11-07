@@ -1,0 +1,37 @@
+---
+- name: 'Prajwal playbook to configure nodejs and codedeploy agent'
+  hosts: all
+  remote_user: ubuntu
+  become: true 
+  connection: local
+
+  tasks:
+    - name: Creating 'ansible-configuration' directory
+      file:
+        path: /home/ubuntu/ansible-configurations
+        state: directory
+        mode: '0777'
+        recurse: yes
+
+    - name: Installing Nodejs
+      apt:
+        update_cache: yes
+        name:
+          - nodejs
+          - ruby-full
+        state: present
+
+    - name: Fetching Codedeploy Files
+      ansible.builtin.get_url:
+        url: https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/install
+        dest: /home/ubuntu/ansible-configurations
+        mode: '0777'
+
+    - name: Running Codedeploy agent
+      shell: /home/ubuntu/ansible-configurations/install auto
+      args:
+        executable: bash
+    
+    - name: Fetching Cloudwatch agent package 
+      apt:
+        deb: https://s3.us-east-2.amazonaws.com/amazoncloudwatch-agent-us-east-2/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
