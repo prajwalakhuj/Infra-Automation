@@ -1,0 +1,9 @@
+---
+- name: 'Nginx Role playbook'
+  hosts: all
+  remote_user: ubuntu
+  become: true
+  connection: local
+
+  roles:
+    - nginx
