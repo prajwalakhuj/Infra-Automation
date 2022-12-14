@@ -1,9 +1,12 @@
 
 #################################################################################################################################
-# Unified Cloudwatch Agent Installation
+# Unified Cloudwatch Agent Installation and nginx installation
 #################################################################################################################################
 
 #!/bin/bash
+sleep 30
+sudo apt update
+sudo apt install nginx -y
 sudo wget https://s3.us-east-2.amazonaws.com/amazoncloudwatch-agent-us-east-2/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
 sudo dpkg -i -E ./amazon-cloudwatch-agent.deb
 #sudo aws configure --profile AmazonCloudWatchAgent
@@ -118,23 +121,6 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 # docker-compose --version
 EOF
-
-#################################################################################################################################
-# Docker Compose Demo
-#################################################################################################################################
-file="$HOME/compose-demo/docker-compose.yml"
-cat <<EOF > docker-compose.yml
-version: '3.7'
-services:
-  web:
-    image: nginx:alpine
-    ports:
-      - "8000:80"
-    volumes:
-      - ./app:/usr/share/nginx/html
-EOF
-cat $file
-
 
 #################################################################################################################################
 # Install Node Js
